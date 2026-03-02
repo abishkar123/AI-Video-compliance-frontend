@@ -1,99 +1,62 @@
-# ComplianceQA — Frontend
+# ComplianceQA — Brand Guardian AI
 
-React + Vite + Tailwind CSS frontend for the AI-powered YouTube video compliance auditing system.
+AI-powered YouTube video compliance auditing system built with **React + Node.js/Express** and **Azure AI Services**.
 
 ---
 
-## Architecture
+## 🏗️ System Design
 
-```
-frontend/
-├── index.html
-├── src/
-│   ├── main.jsx                  # App entry point
-│   ├── App.jsx                   # Router
-│   ├── index.css                 # Global styles + Tailwind
-│   ├── pages/
-│   │   ├── DashboardPage.jsx
-│   │   ├── AuditPage.jsx
-│   │   ├── HistoryPage.jsx
-│   │   └── DocsPage.jsx
-│   ├── components/
-│   │   ├── audit/
-│   │   │   ├── AuditForm.jsx     # URL input + submit
-│   │   │   └── AuditStatus.jsx   # Live polling + progress
-│   │   ├── report/
-│   │   │   └── AuditReport.jsx   # Violations + transcript accordion
-│   │   └── ui/
-│   │       ├── Sidebar.jsx
-│   │       ├── ProgressBar.jsx
-│   │       ├── ViolationCard.jsx
-│   │       └── StatusBadge.jsx
-│   ├── store/
-│   │   └── useStore.js           # Zustand global state + polling logic
-│   └── services/
-│       └── api.js                # Axios API client
-├── .env.example
-├── tailwind.config.js
-├── postcss.config.js
-├── vite.config.js
-└── package.json
-```
+![ComplianceQA Architecture](./backend/data/img/Full%20system%20design.png)
+
+![Workflow Diagram](./backend/data/img/System%20design.png)
+
+*High-level architecture and processing workflow showing the flow between the React Frontend, Node.js API, and Azure AI Services.*
+
+## Repositories
+
+This project is split into two independent repositories:
+
+| Repository | Description | Tech Stack |
+|---|---|---|
+| [`backend/`](./backend/) | Express.js REST API — video processing pipeline, RAG compliance auditing | Node.js, Express, Azure OpenAI, Azure Video Indexer, Azure AI Search |
+| [`frontend/`](./frontend/) | React SPA — audit dashboard, real-time status, violation reports | React 18, Vite, Tailwind CSS, Zustand |
+
+Each repository is **fully standalone** with its own `package.json`, `.gitignore`, `README.md`, and `.env.example`.
 
 ---
 
 ## Quick Start
 
-### 1. Install dependencies
+### Backend
 
 ```bash
+cd backend
 npm install
+cp .env.example .env    # Fill in Azure credentials
+npm run dev              # Starts on http://localhost:8000
 ```
 
-### 2. Configure environment
+### Frontend
 
 ```bash
-cp .env.example .env
-# Set the backend API URL
+cd frontend
+npm install
+cp .env.example .env    # Set VITE_API_URL
+npm run dev              # Starts on http://localhost:5173
 ```
 
-### 3. Start the dev server
-
-```bash
-npm run dev
-```
-
-Open **http://localhost:5173**
-
 ---
 
-## Environment Variables
+## Required Azure Services
 
-| Variable | Description | Default |
-|---|---|---|
-| `VITE_API_URL` | Backend API base URL | `http://localhost:8000` |
-
----
-
-## Scripts
-
-| Command | Description |
+| Service | Purpose |
 |---|---|
-| `npm run dev` | Start Vite dev server with HMR |
-| `npm run build` | Build for production |
-| `npm run preview` | Preview production build locally |
-| `npm run lint` | Run ESLint |
+| Azure OpenAI (gpt-4o) | Compliance reasoning |
+| Azure OpenAI (text-embedding-3-small) | RAG embeddings |
+| Azure Video Indexer | Transcript + OCR extraction |
+| Azure AI Search | Vector knowledge base |
+| Azure Monitor | Telemetry (optional) |
 
 ---
 
-## Tech Stack
-
-| Library | Purpose |
-|---|---|
-| React 18 | UI framework |
-| Vite 5 | Build tool + dev server |
-| Tailwind CSS 3 | Utility-first CSS |
-| React Router 6 | Client-side routing |
-| Zustand | Global state management |
-| Axios | HTTP client |
-| Lucide React | Icons |
+See each repository's `README.md` for detailed setup instructions and API documentation.
